@@ -526,9 +526,9 @@ If a build fails with a disk-related error, re-run the workflow — runners with
 
 *🍌 TEAM WOZIWRT+CLAUDE*
 
-## BE14 WiFi 7 NIC overlay (fork addition)
+## BE14 WiFi 7 NIC overlay
 
-This fork adds the `mt7988a-bananapi-bpi-r4-wifi-be14` DT overlay (openwrt PR #22842), which supplies known-good EEPROM data for the BE14 NIC (fixes the TX-power-zeroed issue on 2.4/5 GHz).
+The `mt7988a-bananapi-bpi-r4-wifi-be14` DT overlay (upstream openwrt PR #22842, patch `911`) supplies known-good EEPROM data for the BE14 NIC (fixes the TX-power-zeroed issue on 2.4/5 GHz). This fork only registers it in the image overlay list via the builder scripts.
 The overlay is built into the image but must be enabled in U-Boot once after flashing:
 
 ```sh
