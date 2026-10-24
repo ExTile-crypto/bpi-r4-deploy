@@ -41,8 +41,10 @@ bash ../mtk-openwrt-feeds/autobuild/unified/autobuild.sh filogic prepare
 
 ### ethernet/board LED (BPI-R4 standard) - leds overlay + uboot LED + filogic device + PHY trigger
 \cp -r ../my_files/470-w-add-bpi-r4-leds-overlay.patch target/linux/mediatek/patches-6.12/
+\cp -r ../my_files/480-w-add-bpi-r4-wifi-be14-overlay.patch target/linux/mediatek/patches-6.12/
 \cp ../my_files/471-w-bpi-r4-led-uboot.patch package/boot/uboot-mediatek/patches/471-bpi-r4-led-uboot.patch
 sed -i 's/mt7988a-bananapi-bpi-r4-nvme$/mt7988a-bananapi-bpi-r4-nvme mt7988a-bananapi-bpi-r4-leds/' target/linux/mediatek/image/filogic.mk
+sed -i 's/mt7988a-bananapi-bpi-r4-leds$/mt7988a-bananapi-bpi-r4-leds mt7988a-bananapi-bpi-r4-wifi-be14/' target/linux/mediatek/image/filogic.mk
 echo "CONFIG_LED_TRIGGER_PHY=y" >> target/linux/mediatek/filogic/config-6.12
 
 \cp ../my_files/arm-trusted-firmware-mediatek-Makefile package/boot/arm-trusted-firmware-mediatek/Makefile

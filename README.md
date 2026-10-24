@@ -525,3 +525,18 @@ If a build fails with a disk-related error, re-run the workflow — runners with
 *This project is not affiliated with Ubiquiti Inc. in any way.*
 
 *🍌 TEAM WOZIWRT+CLAUDE*
+
+## BE14 WiFi 7 NIC overlay (fork addition)
+
+This fork adds the `mt7988a-bananapi-bpi-r4-wifi-be14` DT overlay (openwrt PR #22842), which supplies known-good EEPROM data for the BE14 NIC (fixes the TX-power-zeroed issue on 2.4/5 GHz).
+The overlay is built into the image but must be enabled in U-Boot once after flashing:
+
+```sh
+overlay="mt7988a-bananapi-bpi-r4-wifi-be14"
+current="$(fw_printenv -n bootconf_extra 2>/dev/null)"
+if [ -n "${current}" ]; then fw_setenv bootconf_extra "${current}#${overlay}"
+else fw_setenv bootconf_extra "${overlay}"; fi
+reboot
+```
+
+Notes: the overlay provides no MAC address, so set a fixed `macaddr` on the radio in `/etc/config/wireless`. TX power may stay at maximum (see the forum thread "Can't decrease TX power after new BE14 patch").
