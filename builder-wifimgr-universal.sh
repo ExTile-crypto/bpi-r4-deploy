@@ -58,6 +58,12 @@ sed -i 's/mt7988a-bananapi-bpi-r4-nvme$/mt7988a-bananapi-bpi-r4-nvme mt7988a-ban
 sed -i 's/mt7988a-bananapi-bpi-r4-leds$/mt7988a-bananapi-bpi-r4-leds mt7988a-bananapi-bpi-r4-wifi-be14/' target/linux/mediatek/image/filogic.mk
 echo "CONFIG_LED_TRIGGER_PHY=y" >> target/linux/mediatek/filogic/config-6.12
 
+### BE14 overlay EEPROM: clear byte 0x1af (MT_EE_TESTMODE_EN). The blob has it set to 1, which makes
+### the MTK mt7996 driver boot in testmode and reject every AP interface ("Only monitor interface is allowed in testmode").
+BE14_PATCH=target/linux/mediatek/patches-6.12/911-dts-mt7988a-bpi-r4-be14-wifi-eeprom.patch
+BE14_LINE=$(( $(grep -n 'mediatek,eeprom-data' $BE14_PATCH | head -1 | cut -d: -f1) + 13 ))
+sed -i "${BE14_LINE}s/0x00100001/0x00100000/" $BE14_PATCH
+
 \cp ../my_files/arm-trusted-firmware-mediatek-Makefile package/boot/arm-trusted-firmware-mediatek/Makefile
 
 echo "CONFIG_BLK_DEV_NVME=y" >> target/linux/mediatek/filogic/config-6.12
